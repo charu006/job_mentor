@@ -32,6 +32,9 @@ class AppSettings:
         "Tyomarkkinatori",
         "Duunitori",
         "MonsterFi",
+        "Arbetsformedlingen",
+        "AcademicWork",
+        "JobbSafari",
     )
     arbeitsagentur_enabled: bool = True
     stepstone_enabled: bool = False
@@ -55,6 +58,9 @@ class AppSettings:
     tyomarkkinatori_enabled: bool = False
     duunitori_enabled: bool = False
     monster_fi_enabled: bool = False
+    arbetsformedlingen_enabled: bool = True
+    academicwork_enabled: bool = False
+    jobbsafari_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -76,7 +82,7 @@ def load_settings() -> AppSettings:
             portal.strip()
             for portal in os.getenv(
                 "JOB_PORTALS",
-                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez,Tyomarkkinatori,Duunitori,MonsterFi",
+                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez,Tyomarkkinatori,Duunitori,MonsterFi,Arbetsformedlingen,AcademicWork,JobbSafari",
             ).split(",")
             if portal.strip()
         ),
@@ -102,6 +108,9 @@ def load_settings() -> AppSettings:
         tyomarkkinatori_enabled=_as_bool(os.getenv("TYOMARKKINATORI_ENABLED"), False),
         duunitori_enabled=_as_bool(os.getenv("DUUNITORI_ENABLED"), False),
         monster_fi_enabled=_as_bool(os.getenv("MONSTER_FI_ENABLED"), False),
+        arbetsformedlingen_enabled=_as_bool(os.getenv("ARBETSFORMEDLINGEN_ENABLED"), True),
+        academicwork_enabled=_as_bool(os.getenv("ACADEMICWORK_ENABLED"), False),
+        jobbsafari_enabled=_as_bool(os.getenv("JOBBSAFARI_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),

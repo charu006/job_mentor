@@ -71,6 +71,16 @@ The project is built in stages, and Stage 4 introduces a deterministic matching 
 | duunitori.fi | DISABLED | Safe disabled stub | No verified public vacancy API/feed or explicitly permitted automated retrieval interface was identified; public access alone is not treated as permission to scrape |
 | monster.fi | DISABLED | Safe disabled stub | The current service is effectively a bot-gated/rebranded Jobly-style flow with no verified public retrieval contract; it is not treated as an independently active portal |
 
+## Stage 5H Sweden portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| Arbetsförmedlingen / Platsbanken | ACTIVE via official public API | Public JobSearch API | Uses the official JobSearch API with public access, no API key or registration required, and no HTML scraping. This project uses the documented API rather than the website front end. |
+| Academic Work Sweden | DISABLED | Safe disabled stub | No clearly documented public vacancy API/feed intended for automated retrieval was identified; public site visibility does not establish permission to scrape. |
+| JobbSafari | DISABLED | Safe disabled stub | Current terms allow ordinary links but prohibit systematic copying/scraping and competing or substantially similar use without explicit written approval. |
+
+Official API/access rationale: Arbetsförmedlingen’s official JobSearch API is a public, documented JSON interface under the official jobtech/open-data model and is used directly. Academic Work Sweden and JobbSafari are kept disabled because no verified public API/feed or approved retrieval model was identified, and the current terms restrict automated or competing use.
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:
