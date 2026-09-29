@@ -138,8 +138,8 @@ def test_stage6a_cli_main_runs_pipeline_without_email_or_scheduler(monkeypatch, 
             invalid_jobs=0,
         )
 
-    monkeypatch.setattr(cli, "run_collection", fake_run_collection)
-    cli.main(["--db", str(tmp_path / "cli.db")])
+    monkeypatch.setattr(cli.runner, "run_collection", fake_run_collection)
+    cli.main(["--db", str(tmp_path / "cli.db"), "--collect-only"])
     assert calls == ["ran"]
 
 
