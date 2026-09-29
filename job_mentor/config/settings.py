@@ -29,6 +29,9 @@ class AppSettings:
         "Iefp",
         "NetEmpregos",
         "Beebez",
+        "Tyomarkkinatori",
+        "Duunitori",
+        "MonsterFi",
     )
     arbeitsagentur_enabled: bool = True
     stepstone_enabled: bool = False
@@ -49,6 +52,9 @@ class AppSettings:
     iefp_enabled: bool = False
     net_empregos_enabled: bool = False
     beebez_enabled: bool = False
+    tyomarkkinatori_enabled: bool = False
+    duunitori_enabled: bool = False
+    monster_fi_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -70,7 +76,7 @@ def load_settings() -> AppSettings:
             portal.strip()
             for portal in os.getenv(
                 "JOB_PORTALS",
-                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez",
+                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez,Tyomarkkinatori,Duunitori,MonsterFi",
             ).split(",")
             if portal.strip()
         ),
@@ -93,6 +99,9 @@ def load_settings() -> AppSettings:
         iefp_enabled=_as_bool(os.getenv("IEFP_ENABLED"), False),
         net_empregos_enabled=_as_bool(os.getenv("NET_EMPREGOS_ENABLED"), False),
         beebez_enabled=_as_bool(os.getenv("BEEBEZ_ENABLED"), False),
+        tyomarkkinatori_enabled=_as_bool(os.getenv("TYOMARKKINATORI_ENABLED"), False),
+        duunitori_enabled=_as_bool(os.getenv("DUUNITORI_ENABLED"), False),
+        monster_fi_enabled=_as_bool(os.getenv("MONSTER_FI_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),

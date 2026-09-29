@@ -62,6 +62,15 @@ The project is built in stages, and Stage 4 introduces a deterministic matching 
 | emprego.iefp.pt | DISABLED | Safe disabled stub | The current public IEFP experience does not provide a documented public vacancy API/feed or explicitly permitted automated retrieval interface |
 | net-empregos.com | ACTIVE via official RSS feed | Official feed | Uses the public RSS feed published by the site itself; no credential or scraping bypass is used |
 | beebez.pt | DISABLED / domain not current | Safe disabled stub | The requested beebez.pt domain is not treated as a current public job portal and no verified public jobs API/feed was identified |
+
+## Stage 5G Finland portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| tyomarkkinatori.fi | DISABLED | Safe disabled stub | The official access model requires activation, business-ID validation, KEHA checks and credentials; this project does not have that organisational approval |
+| duunitori.fi | DISABLED | Safe disabled stub | No verified public vacancy API/feed or explicitly permitted automated retrieval interface was identified; public access alone is not treated as permission to scrape |
+| monster.fi | DISABLED | Safe disabled stub | The current service is effectively a bot-gated/rebranded Jobly-style flow with no verified public retrieval contract; it is not treated as an independently active portal |
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:
