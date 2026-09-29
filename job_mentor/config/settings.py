@@ -71,6 +71,9 @@ class AppSettings:
     pracuj_enabled: bool = False
     nofluffjobs_enabled: bool = False
     rocketjobs_enabled: bool = False
+    adem_enabled: bool = False
+    jobs_lu_enabled: bool = False
+    moovijob_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -128,6 +131,9 @@ def load_settings() -> AppSettings:
         pracuj_enabled=_as_bool(os.getenv("PRACUJ_ENABLED"), False),
         nofluffjobs_enabled=_as_bool(os.getenv("NOFLUFFJOBS_ENABLED"), False),
         rocketjobs_enabled=_as_bool(os.getenv("ROCKETJOBS_ENABLED"), False),
+        adem_enabled=_as_bool(os.getenv("ADEM_ENABLED"), False),
+        jobs_lu_enabled=_as_bool(os.getenv("JOBS_LU_ENABLED"), False),
+        moovijob_enabled=_as_bool(os.getenv("MOOVIJOB_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),

@@ -101,6 +101,16 @@ Official access rationale: NAV/Arbeidsplassen exposes a public job-ad API surfac
 
 Official access rationale: Each of these Polish portals remains disabled by default because the project only permits collection from documented, clearly authorized public interfaces. The project does not treat public form pages or browser-visible content as permission to scrape or bypass terms, and no undocumented private API endpoints or hidden browser-network workarounds are used.
 
+## Stage 5K Luxembourg portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| adem.public.lu | DISABLED | Safe disabled stub | Public vacancies may be visible, but no verified official public vacancy-search API/feed has been documented and authorized for this project. Public visibility is not treated as permission to scrape or reverse-engineer frontend endpoints. |
+| jobs.lu | DISABLED | Safe disabled stub | Official terms are intended for individual job searching and prohibit using the service to develop other services. No verified public vacancy API/feed for this project was identified. |
+| moovijob.com | DISABLED | Safe disabled stub | Official terms prohibit illicit access and actions that compromise proper operation of the platform. No documented public API/feed authorized for automated collection was identified. |
+
+Official access rationale: The Luxembourg portals remain disabled by default because this project only collects from documented, explicitly permitted public APIs/feeds. Publicly visible pages, candidate-facing job search flows, and browser-discoverable content are not treated as authorization to scrape, automate, or reverse-engineer private interfaces.
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:

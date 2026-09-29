@@ -1,4 +1,5 @@
 from job_mentor.collectors.academic_work import AcademicWorkCollector
+from job_mentor.collectors.adem import AdemCollector
 from job_mentor.collectors.arbeit_swiss import ArbeitSwissCollector
 from job_mentor.collectors.arbetsformedlingen import ArbetsformedlingenCollector
 from job_mentor.collectors.arbeidsplassen import ArbeidsplassenCollector
@@ -15,8 +16,10 @@ from job_mentor.collectors.jobdigger import JobDiggerCollector
 from job_mentor.collectors.jobnet import JobNetCollector
 from job_mentor.collectors.jobup_ch import JobUpCHCollector
 from job_mentor.collectors.jobs_ch import JobsCHCollector
+from job_mentor.collectors.jobs_lu import JobsLuCollector
 from job_mentor.collectors.meinestadt import MeinestadtCollector
 from job_mentor.collectors.monster_fi import MonsterFiCollector
+from job_mentor.collectors.moovijob import MoovijobCollector
 from job_mentor.collectors.nationalevacaturebank import NationaleVacaturebankCollector
 from job_mentor.collectors.net_empregos import NetEmpregosCollector
 from job_mentor.collectors.nofluffjobs import NoFluffJobsCollector
@@ -32,6 +35,7 @@ from job_mentor.collectors.workindenmark import WorkindenmarkCollector
 
 __all__ = [
     "AcademicWorkCollector",
+    "AdemCollector",
     "ArbetsformedlingenCollector",
     "ArbeitSwissCollector",
     "ArbeidsplassenCollector",
@@ -48,8 +52,10 @@ __all__ = [
     "JobbSafariCollector",
     "JobbnorgeCollector",
     "JobsCHCollector",
+    "JobsLuCollector",
     "MeinestadtCollector",
     "MonsterFiCollector",
+    "MoovijobCollector",
     "NationaleVacaturebankCollector",
     "NetEmpregosCollector",
     "NoFluffJobsCollector",
