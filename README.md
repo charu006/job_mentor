@@ -16,6 +16,14 @@ The system is designed to monitor job portals and detect roles substantially rel
 
 The project is built in stages, and Stage 4 introduces a deterministic matching engine for elastomer/polymer/material-development relevance.
 
+## Stage 5A portal status
+
+| Portal | Country | Status | Integration method | Credentials required |
+| --- | --- | --- | --- | --- |
+| Arbeitsagentur | Germany | IMPLEMENTED | Public website fetch via documented interface pattern | No |
+| StepStone | Germany | DISABLED / REQUIRES AUTHORIZATION | Not currently automated; safe disabled stub | Yes, if a permitted API contract is later provided |
+| meinestadt | Germany | DISABLED / NOT CURRENTLY AUTOMATABLE | Not currently automated; safe disabled stub | No verified public API or feed available |
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:
@@ -64,38 +72,15 @@ The current configurable thresholds are:
 
 These thresholds are configured in the matching configuration layer and can be changed without changing the matching logic.
 
-## Examples
-
-Strong examples:
-- Elastomer Development Engineer
-- Polymer Scientist
-- Rubber Technology Engineer
-- Materials Development Engineer – Polymer
-- Compound Development Engineer
-
-Good examples:
-- Polymer R&D Engineer
-- Product Development Engineer – Rubber Components
-- Elastomer Specialist
-
-Possible examples:
-- Materials Engineer with polymer formulation work
-- Mechanical Engineer with polymer seal development responsibilities
-
-Irrelevant examples:
-- Software Engineer at a polymer company
-- Accountant at a rubber manufacturer
-- warehouse or administrative role with no technical material responsibility
-
 ## Deterministic and local-only behavior
 
-Stage 4 does not depend on a cloud API or an LLM. The process is:
+The Stage 5A portal adapters are intentionally conservative:
 
-- deterministic
-- local
-- explainable
-- testable
-- configurable
+- Arbeitsagentur remains implemented and tested
+- StepStone remains disabled unless a permitted, verified API or authorization flow is provided
+- Meinestadt remains disabled unless a documented public mechanism is available
+- no unauthorized scraping is attempted
+- no credentials or personal sessions are added
 
 ## Architecture overview
 
@@ -127,4 +112,4 @@ The project remains structured into modular layers:
 
 - No real credentials or secrets are stored in the repository.
 - The matching engine is intentionally local and deterministic.
-- Email sending, additional portals, and GitHub Actions are intentionally not part of this stage.
+- Email sending, deployment workflows, and additional portal automation remain intentionally out of scope for this stage.

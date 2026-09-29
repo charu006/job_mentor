@@ -10,7 +10,10 @@ class AppSettings:
     search_window_days: int = 14
     recipient_email: str | None = None
     monitoring_enabled: bool = False
-    job_portals: tuple[str, ...] = ("EURES", "LinkedIn", "Indeed", "StepStone")
+    job_portals: tuple[str, ...] = ("Arbeitsagentur", "StepStone", "Meinestadt")
+    arbeitsagentur_enabled: bool = True
+    stepstone_enabled: bool = False
+    meinestadt_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -18,6 +21,11 @@ class AppSettings:
 
 
 def load_settings() -> AppSettings:
+    def _as_bool(value: str | None, default: bool) -> bool:
+        if value is None:
+            return default
+        return value.strip().lower() in {"1", "true", "yes", "on"}
+
     return AppSettings(
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
         search_window_days=int(os.getenv("SEARCH_WINDOW_DAYS", "14")),
@@ -25,9 +33,12 @@ def load_settings() -> AppSettings:
         monitoring_enabled=os.getenv("MONITORING_ENABLED", "false").lower() == "true",
         job_portals=tuple(
             portal.strip()
-            for portal in os.getenv("JOB_PORTALS", "EURES,LinkedIn,Indeed,StepStone").split(",")
+            for portal in os.getenv("JOB_PORTALS", "Arbeitsagentur,StepStone,Meinestadt").split(",")
             if portal.strip()
         ),
+        arbeitsagentur_enabled=_as_bool(os.getenv("ARBEITSAGENTUR_ENABLED"), True),
+        stepstone_enabled=_as_bool(os.getenv("STEPSTONE_ENABLED"), False),
+        meinestadt_enabled=_as_bool(os.getenv("MEINESTADT_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),
