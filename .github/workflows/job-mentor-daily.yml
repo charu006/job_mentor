@@ -43,12 +43,8 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "should_run=true" >> "$GITHUB_OUTPUT"
           else
-            python - <<'PY' >> "$GITHUB_OUTPUT"
-from job_mentor.scheduler.digest_scheduler import default_scheduler
-from job_mentor.timezone_utils import utc_now
-
-print(f"should_run={str(default_scheduler.is_due(utc_now())).lower()}")
-PY
+            SHOULD_RUN=$(python -c "from job_mentor.scheduler.digest_scheduler import default_scheduler; from job_mentor.timezone_utils import utc_now; print(str(default_scheduler.is_due(utc_now())).lower())")
+            echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Choose command
