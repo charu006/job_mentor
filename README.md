@@ -32,6 +32,14 @@ The project is built in stages, and Stage 4 introduces a deterministic matching 
 | Nationale Vacaturebank | DISABLED | Safe disabled stub | No verified public API/feed identified for safe automated access |
 | JobDigger | API-KEY REQUIRED | Official API with documented endpoints | Enabled only when `JOBDIGGER_API_KEY` is configured and `JOBDIGGER_ENABLED=true` |
 
+## Stage 5C Switzerland portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| arbeit.swiss | DISABLED | Safe disabled stub | Employer-facing Job-Room interface is not treated as a public vacancy-search API for this project |
+| jobs.ch | DISABLED | Safe disabled stub | JobCloud employer/recruiting platform; automated scraping is not authorized |
+| jobup.ch | DISABLED | Safe disabled stub | JobCloud employer/recruiting platform; no verified public retrieval API/feed identified |
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:

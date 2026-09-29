@@ -17,6 +17,9 @@ class AppSettings:
         "WerkNL",
         "NationaleVacaturebank",
         "JobDigger",
+        "ArbeitSwiss",
+        "JobsCH",
+        "JobUpCH",
     )
     arbeitsagentur_enabled: bool = True
     stepstone_enabled: bool = False
@@ -25,6 +28,9 @@ class AppSettings:
     nationalevacaturebank_enabled: bool = False
     jobdigger_enabled: bool = False
     jobdigger_api_key: str | None = None
+    arbeit_swiss_enabled: bool = False
+    jobs_ch_enabled: bool = False
+    jobup_ch_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -46,7 +52,7 @@ def load_settings() -> AppSettings:
             portal.strip()
             for portal in os.getenv(
                 "JOB_PORTALS",
-                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger",
+                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH",
             ).split(",")
             if portal.strip()
         ),
@@ -57,6 +63,9 @@ def load_settings() -> AppSettings:
         nationalevacaturebank_enabled=_as_bool(os.getenv("NATIONALEVACATUREBANK_ENABLED"), False),
         jobdigger_enabled=_as_bool(os.getenv("JOBDIGGER_ENABLED"), False),
         jobdigger_api_key=os.getenv("JOBDIGGER_API_KEY") or None,
+        arbeit_swiss_enabled=_as_bool(os.getenv("ARBEIT_SWISS_ENABLED"), False),
+        jobs_ch_enabled=_as_bool(os.getenv("JOBS_CH_ENABLED"), False),
+        jobup_ch_enabled=_as_bool(os.getenv("JOBUP_CH_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),
