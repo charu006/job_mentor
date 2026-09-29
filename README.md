@@ -111,6 +111,17 @@ Official access rationale: Each of these Polish portals remains disabled by defa
 
 Official access rationale: The Luxembourg portals remain disabled by default because this project only collects from documented, explicitly permitted public APIs/feeds. Publicly visible pages, candidate-facing job search flows, and browser-discoverable content are not treated as authorization to scrape, automate, or reverse-engineer private interfaces.
 
+## Stage 5L EU-wide / Euraxess portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| EURES / Europass Find Jobs | DISABLED | Safe disabled stub | The public Europass job-search experience is backed by the EURES labour-mobility portal, but no verified public vacancy-search API/feed was identified that is clearly authorized for this project. The project treats the public front end as an interface to EURES data rather than as a separate independent API source and does not create duplicate collectors for the same underlying vacancy database. |
+| EURAXESS | DISABLED | Safe disabled stub | The current official domain is https://euraxess.ec.europa.eu/. Legacy domains such as thenetwork.euraxesss.org and euraxess.eu are not treated as the active public retrieval source. No documented public vacancy-search API/feed was identified that authorizes automated retrieval for this project. |
+| jobsireland.eu | DISABLED | Safe disabled stub | This is not the same service as jobsireland.ie. This domain is treated separately and remains disabled unless a documented public retrieval contract is verified. |
+| Trello | NOT A GENERIC JOB PORTAL | Not implemented | Trello is not treated as a generic job portal. No specific public board/list was identified that is clearly authorized as a legitimate job source for this project, so no Trello collector is created. |
+
+Official access rationale: EURES and EURAXESS are handled conservatively under the project’s safe-disabled policy. The project does not assume that a public website or a public vacancy page is an authorized automated retrieval endpoint. For EURES, Europass is treated as an interface over the EURES vacancy database rather than a separate vendor-specific collector. For EURAXESS, the current official domain is verified as https://euraxess.ec.europa.eu/; legacy domains are documented as obsolete or redirected rather than treated as independent sources. For jobsireland.eu, the project keeps the domain distinct from jobsireland.ie and requires explicit public authorization before any automated collection is allowed. Trello is explicitly documented as not being a generic job portal for this project unless a specific public board and API contract are confirmed.
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:

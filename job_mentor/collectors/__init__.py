@@ -7,6 +7,8 @@ from job_mentor.collectors.arbeitsagentur import ArbeitsagenturCollector
 from job_mentor.collectors.base import BaseCollector
 from job_mentor.collectors.beebez import BeebezCollector
 from job_mentor.collectors.duunitori import DuunitoriCollector
+from job_mentor.collectors.eures import EuresCollector
+from job_mentor.collectors.euraxess import EuraxessCollector
 from job_mentor.collectors.finn import FinnCollector
 from job_mentor.collectors.iefp import IefpCollector
 from job_mentor.collectors.irishjobs import IrishJobsCollector
@@ -17,6 +19,7 @@ from job_mentor.collectors.jobnet import JobNetCollector
 from job_mentor.collectors.jobup_ch import JobUpCHCollector
 from job_mentor.collectors.jobs_ch import JobsCHCollector
 from job_mentor.collectors.jobs_lu import JobsLuCollector
+from job_mentor.collectors.jobsireland_eu import JobsIrelandEuCollector
 from job_mentor.collectors.meinestadt import MeinestadtCollector
 from job_mentor.collectors.monster_fi import MonsterFiCollector
 from job_mentor.collectors.moovijob import MoovijobCollector
@@ -43,6 +46,8 @@ __all__ = [
     "BaseCollector",
     "BeebezCollector",
     "DuunitoriCollector",
+    "EuresCollector",
+    "EuraxessCollector",
     "FinnCollector",
     "IefpCollector",
     "IrishJobsCollector",
@@ -52,6 +57,7 @@ __all__ = [
     "JobbSafariCollector",
     "JobbnorgeCollector",
     "JobsCHCollector",
+    "JobsIrelandEuCollector",
     "JobsLuCollector",
     "MeinestadtCollector",
     "MonsterFiCollector",

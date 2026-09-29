@@ -38,6 +38,9 @@ class AppSettings:
         "Arbeidsplassen",
         "Finn",
         "Jobbnorge",
+        "EURES",
+        "EURAXESS",
+        "JobsIrelandEU",
     )
     arbeitsagentur_enabled: bool = True
     stepstone_enabled: bool = False
@@ -74,6 +77,9 @@ class AppSettings:
     adem_enabled: bool = False
     jobs_lu_enabled: bool = False
     moovijob_enabled: bool = False
+    eures_enabled: bool = False
+    euraxess_enabled: bool = False
+    jobsireland_eu_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -95,7 +101,7 @@ def load_settings() -> AppSettings:
             portal.strip()
             for portal in os.getenv(
                 "JOB_PORTALS",
-                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez,Tyomarkkinatori,Duunitori,MonsterFi,Arbetsformedlingen,AcademicWork,JobbSafari,Arbeidsplassen,Finn,Jobbnorge",
+                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez,Tyomarkkinatori,Duunitori,MonsterFi,Arbetsformedlingen,AcademicWork,JobbSafari,Arbeidsplassen,Finn,Jobbnorge,EURES,EURAXESS,JobsIrelandEU",
             ).split(",")
             if portal.strip()
         ),
@@ -134,6 +140,9 @@ def load_settings() -> AppSettings:
         adem_enabled=_as_bool(os.getenv("ADEM_ENABLED"), False),
         jobs_lu_enabled=_as_bool(os.getenv("JOBS_LU_ENABLED"), False),
         moovijob_enabled=_as_bool(os.getenv("MOOVIJOB_ENABLED"), False),
+        eures_enabled=_as_bool(os.getenv("EURES_ENABLED"), False),
+        euraxess_enabled=_as_bool(os.getenv("EURAXESS_ENABLED"), False),
+        jobsireland_eu_enabled=_as_bool(os.getenv("JOBSIRELAND_EU_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),
