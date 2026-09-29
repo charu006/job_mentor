@@ -4,7 +4,7 @@ Job Mentor is a Python-based monitoring system for discovering European jobs in 
 
 ## Purpose
 
-The system is designed to search multiple European job portals and identify jobs related to:
+The system is designed to monitor job portals and detect roles substantially related to:
 
 - elastomers
 - polymers
@@ -12,64 +12,102 @@ The system is designed to search multiple European job portals and identify jobs
 - materials development
 - product/material development
 - polymer science
-- related research and development positions
+- formulation, compounding and related technical R&D work
 
-The project is intentionally staged so the initial work focuses on a reliable foundation before any scraping or notification logic is added.
+The project is built in stages, and Stage 4 introduces a deterministic matching engine for elastomer/polymer/material-development relevance.
+
+## Matching engine purpose
+
+The matching engine is intended to score a job based on how strongly it matches the intended job family:
+
+- elastomer and rubber technology
+- polymer science and polymer technology
+- materials development and materials engineering
+- product development in polymer/elastomer/rubber contexts
+- research and development roles where technical materials context is present
+
+It is designed to be deterministic, explainable, and testable without requiring an external LLM.
+
+## Core keyword groups
+
+The matching engine uses a centralized taxonomy in [job_mentor/matching/config.py](job_mentor/matching/config.py), grouped into:
+
+- core elastomer/polymer keywords
+- related elastomer and rubber terms
+- polymer engineering and chemistry terms
+- materials development and materials science terms
+- product-development keywords
+- R&D keywords
+- formulation and compounding terms
+- German technical terminology
+- exclusion/context penalties for irrelevant roles
+
+## Scoring concept
+
+The engine calculates a score from 0 to 100 for each job based on weighted matches in:
+
+- job title
+- job description
+- company metadata
+- location metadata
+
+Title matches receive higher weight than incidental description-only mentions. Repeated technical terms and relevant context increase the score. Generic roles remain constrained by contextual relevance.
+
+## Thresholds
+
+The current configurable thresholds are:
+
+- 80–100: STRONG_MATCH
+- 60–79: GOOD_MATCH
+- 40–59: POSSIBLE_MATCH
+- below 40: IRRELEVANT
+
+These thresholds are configured in the matching configuration layer and can be changed without changing the matching logic.
+
+## Examples
+
+Strong examples:
+- Elastomer Development Engineer
+- Polymer Scientist
+- Rubber Technology Engineer
+- Materials Development Engineer – Polymer
+- Compound Development Engineer
+
+Good examples:
+- Polymer R&D Engineer
+- Product Development Engineer – Rubber Components
+- Elastomer Specialist
+
+Possible examples:
+- Materials Engineer with polymer formulation work
+- Mechanical Engineer with polymer seal development responsibilities
+
+Irrelevant examples:
+- Software Engineer at a polymer company
+- Accountant at a rubber manufacturer
+- warehouse or administrative role with no technical material responsibility
+
+## Deterministic and local-only behavior
+
+Stage 4 does not depend on a cloud API or an LLM. The process is:
+
+- deterministic
+- local
+- explainable
+- testable
+- configurable
 
 ## Architecture overview
 
-The project is organized into a small set of modular components:
+The project remains structured into modular layers:
 
-- `job_mentor/config`: site and keyword configuration, environment-based application settings.
-- `job_mentor/core`: logging, orchestration, and runtime setup.
-- `job_mentor/collectors`: portal-specific search collectors (planned, not yet implemented).
-- `job_mentor/database`: persistence logic for jobs and monitoring history.
-- `job_mentor/matching`: keyword filtering and relevance evaluation.
-- `job_mentor/notifications`: email and alert delivery logic.
-- `job_mentor/utils`: common helpers for dates, URLs, and text normalization.
-
-## Development stages
-
-### Stage 1: Foundation and scaffolding
-
-This is the current stage.
-
-Goals:
-- establish a clean project structure
-- create configuration for portals and keywords
-- provide placeholder modules for future implementation
-- add basic tests for imports and configuration loading
-- ensure the project can be run in a Python 3.12+ virtual environment
-
-### Stage 2: Data collection
-
-Planned work:
-- implement portal-specific collectors
-- add job extraction helpers
-- support the last 14 days of job postings
-- normalize titles, locations, and dates across sources
-
-### Stage 3: Matching and deduplication
-
-Planned work:
-- create robust keyword matching
-- detect newly discovered jobs only
-- prevent duplicate notifications
-- persist monitoring history in a database
-
-### Stage 4: Notifications and automation
-
-Planned work:
-- email delivery using environment-configured settings
-- failure logging without stopping monitoring
-- operational improvements for resilience
-
-### Stage 5: Deployment and scheduling
-
-Planned work:
-- configure automation for recurring scans
-- run in GitHub Actions or a similar scheduler
-- document setup and expected runtime behavior
+- `job_mentor/config`: configuration and environment settings
+- `job_mentor/core`: orchestration and pipeline utilities
+- `job_mentor/collectors`: portal-specific collectors
+- `job_mentor/database`: persistence and deduplication
+- `job_mentor/matching`: keyword taxonomy and scoring engine
+- `job_mentor/reporting`: daily report generation
+- `job_mentor/utils`: shared helpers
 
 ## Local setup
 
@@ -87,6 +125,6 @@ Planned work:
 
 ## Notes
 
-- Do not commit real email credentials, API keys, passwords, or secrets.
-- Use environment variables for runtime configuration.
-- No scraping or production automation is implemented in this stage.
+- No real credentials or secrets are stored in the repository.
+- The matching engine is intentionally local and deterministic.
+- Email sending, additional portals, and GitHub Actions are intentionally not part of this stage.
