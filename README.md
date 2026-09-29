@@ -48,6 +48,14 @@ The project is built in stages, and Stage 4 introduces a deterministic matching 
 | ofir.dk | DISABLED | Safe disabled stub | The current official site is closed (HTTP 410) and no supported public retrieval interface is available |
 | workindenmark.dk | DISABLED | Safe disabled stub | Public information portal directing to Jobnet-hosted vacancy search; no verified public API/feed is accepted for automation |
 
+## Stage 5E Ireland portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| publicjobs.ie | DISABLED | Safe disabled stub | Official terms restrict copying/reproduction for personal, non-commercial use; the project does not treat public visibility as permission to scrape |
+| irishjobs.ie | DISABLED | Safe disabled stub | The Stepstone Group Ireland Recruit Limited terms restrict removing website content by competitive means; no documented public partner API or permitted automated retrieval mechanism is used |
+| recruitireland.com | DISABLED | Safe disabled stub | Public viewing is allowed within intended use, but no verified public API/feed or explicitly permitted automated interface was identified for this project |
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:

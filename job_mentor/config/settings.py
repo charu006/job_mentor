@@ -23,6 +23,9 @@ class AppSettings:
         "JobNet",
         "Ofir",
         "WorkInDenmark",
+        "PublicJobs",
+        "IrishJobs",
+        "RecruitIreland",
     )
     arbeitsagentur_enabled: bool = True
     stepstone_enabled: bool = False
@@ -37,6 +40,9 @@ class AppSettings:
     jobnet_enabled: bool = False
     ofir_enabled: bool = False
     workindenmark_enabled: bool = False
+    publicjobs_enabled: bool = False
+    irishjobs_enabled: bool = False
+    recruitireland_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -58,7 +64,7 @@ def load_settings() -> AppSettings:
             portal.strip()
             for portal in os.getenv(
                 "JOB_PORTALS",
-                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark",
+                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland",
             ).split(",")
             if portal.strip()
         ),
@@ -75,6 +81,9 @@ def load_settings() -> AppSettings:
         jobnet_enabled=_as_bool(os.getenv("JOBNET_ENABLED"), False),
         ofir_enabled=_as_bool(os.getenv("OFIR_ENABLED"), False),
         workindenmark_enabled=_as_bool(os.getenv("WORKINDENMARK_ENABLED"), False),
+        publicjobs_enabled=_as_bool(os.getenv("PUBLICJOBS_ENABLED"), False),
+        irishjobs_enabled=_as_bool(os.getenv("IRISHJOBS_ENABLED"), False),
+        recruitireland_enabled=_as_bool(os.getenv("RECRUITIRELAND_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),
