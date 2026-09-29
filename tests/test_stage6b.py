@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import smtplib
 from datetime import datetime, timedelta, timezone
 
 import importlib
@@ -228,3 +229,91 @@ def test_load_settings_reads_project_local_env_file(tmp_path, monkeypatch):
     settings = load_settings()
     assert settings.email_greeting == "Hi override,"
     assert settings.email_signoff == "Your override,"
+
+
+def test_email_notifier_sends_secure_smtp_message(monkeypatch):
+    monkeypatch.setenv("SMTP_HOST", "smtp.example.com")
+    monkeypatch.setenv("SMTP_PORT", "587")
+    monkeypatch.setenv("SMTP_USERNAME", "smtp-user")
+    monkeypatch.setenv("SMTP_PASSWORD", "smtp-pass")
+    monkeypatch.setenv("EMAIL_FROM", "noreply@example.com")
+    monkeypatch.setenv("EMAIL_TO", "alerts@example.com")
+    monkeypatch.setenv("EMAIL_GREETING", "Hi Jannu,")
+    monkeypatch.setenv("EMAIL_SIGNOFF", "Your potato 🥔")
+
+    recorded = {}
+
+    class FakeSMTP:
+        def __init__(self, host, port, timeout=None):
+            recorded["host"] = host
+            recorded["port"] = port
+            recorded["timeout"] = timeout
+
+        def ehlo(self, *args, **kwargs):
+            recorded["ehlo_calls"] = recorded.get("ehlo_calls", 0) + 1
+            return (250, b"ok")
+
+        def starttls(self, context=None):
+            recorded["starttls_called"] = True
+            recorded["tls_context"] = context
+            return (220, b"ready")
+
+        def login(self, username, password):
+            recorded["login"] = (username, password)
+            return (235, b"auth ok")
+
+        def send_message(self, message):
+            recorded["message"] = message
+            return {}
+
+        def quit(self):
+            recorded["quit"] = True
+
+    monkeypatch.setattr(smtplib, "SMTP", FakeSMTP)
+
+    notifier = EmailNotifier()
+    plain = notifier.render_plain_text("Daily report body")
+    html = notifier.render_html("Daily report body")
+    result = notifier.send("Daily report", plain, html_body=html)
+
+    assert result["status"] == "success"
+    assert recorded["host"] == "smtp.example.com"
+    assert recorded["port"] == 587
+    assert recorded["login"] == ("smtp-user", "smtp-pass")
+    assert recorded["starttls_called"] is True
+    assert recorded["message"]["From"] == "noreply@example.com"
+    assert recorded["message"]["To"] == "alerts@example.com"
+    assert recorded["message"]["Subject"] == "Daily report"
+    plain_body = recorded["message"].get_body("plain").get_content()
+    html_body = recorded["message"].get_body("html").get_content()
+    assert "Hi Jannu," in plain_body
+    assert "Your potato 🥔" in plain_body
+    assert "Daily report body" in plain_body
+    assert "Hi Jannu," in html_body
+    assert "Your potato 🥔" in html_body
+    assert "Content-Type: text/html" in recorded["message"].as_string()
+
+
+def test_email_notifier_missing_smtp_config_returns_error(monkeypatch):
+    monkeypatch.delenv("SMTP_HOST", raising=False)
+    monkeypatch.delenv("SMTP_PORT", raising=False)
+    monkeypatch.delenv("SMTP_USERNAME", raising=False)
+    monkeypatch.delenv("SMTP_PASSWORD", raising=False)
+    monkeypatch.delenv("EMAIL_FROM", raising=False)
+    monkeypatch.delenv("EMAIL_TO", raising=False)
+
+    notifier = EmailNotifier(
+        smtp_host="",
+        smtp_port=587,
+        smtp_username="",
+        smtp_password="",
+        email_from="",
+        email_to="",
+        email_greeting="Hi Jannu,",
+        email_signoff="Your potato 🥔",
+    )
+
+    result = notifier.send("Daily report", "Body")
+    assert result["status"] == "error"
+    assert result["error"] == "SMTP configuration is incomplete"
+    assert "SMTP_HOST" in result["missing"]

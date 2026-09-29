@@ -87,6 +87,12 @@ class AppSettings:
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
     report_minute: int = 0
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+    email_from: str | None = None
+    email_to: str | None = None
     email_greeting: str = "Hi there,"
     email_signoff: str = "Best regards,"
 
@@ -164,6 +170,12 @@ def load_settings() -> AppSettings:
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),
         report_minute=int(os.getenv("REPORT_MINUTE", "0")),
+        smtp_host=os.getenv("SMTP_HOST"),
+        smtp_port=int(os.getenv("SMTP_PORT", "587")),
+        smtp_username=os.getenv("SMTP_USERNAME"),
+        smtp_password=os.getenv("SMTP_PASSWORD"),
+        email_from=os.getenv("EMAIL_FROM"),
+        email_to=os.getenv("EMAIL_TO") or os.getenv("RECIPIENT_EMAIL"),
         email_greeting=os.getenv("EMAIL_GREETING", "Hi there,"),
         email_signoff=os.getenv("EMAIL_SIGNOFF", "Best regards,"),
     )
