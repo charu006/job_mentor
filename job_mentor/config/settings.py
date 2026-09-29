@@ -2,6 +2,9 @@
 
 import os
 from dataclasses import dataclass
+from pathlib import Path
+
+from dotenv import load_dotenv
 
 
 @dataclass(frozen=True)
@@ -84,9 +87,23 @@ class AppSettings:
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
     report_minute: int = 0
+    email_greeting: str = "Hi there,"
+    email_signoff: str = "Best regards,"
+
+
+def _project_root() -> Path:
+    return Path(__file__).resolve().parents[2]
+
+
+def load_local_env() -> None:
+    env_path = _project_root() / ".env"
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path, override=False)
 
 
 def load_settings() -> AppSettings:
+    load_local_env()
+
     def _as_bool(value: str | None, default: bool) -> bool:
         if value is None:
             return default
@@ -147,7 +164,10 @@ def load_settings() -> AppSettings:
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),
         report_minute=int(os.getenv("REPORT_MINUTE", "0")),
+        email_greeting=os.getenv("EMAIL_GREETING", "Hi there,"),
+        email_signoff=os.getenv("EMAIL_SIGNOFF", "Best regards,"),
     )
 
 
+load_local_env()
 settings = load_settings()

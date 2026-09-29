@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import importlib
+
 import pytest
 
 import job_mentor.collectors.arbeidsplassen as arbeidsplassen_module
@@ -8,8 +10,15 @@ from job_mentor.collectors.finn import FinnCollector
 from job_mentor.collectors.jobbnorge import JobbnorgeCollector
 from job_mentor.config.settings import load_settings
 
+settings_module = importlib.import_module("job_mentor.config.settings")
 
-def test_norway_settings_expose_flags():
+
+def test_norway_settings_expose_flags(monkeypatch, tmp_path):
+    monkeypatch.setattr(settings_module, "_project_root", lambda: tmp_path)
+    monkeypatch.delenv("ARBEIDSPLASSEN_ENABLED", raising=False)
+    monkeypatch.delenv("FINN_ENABLED", raising=False)
+    monkeypatch.delenv("JOBBNORGE_ENABLED", raising=False)
+
     settings = load_settings()
     assert hasattr(settings, "arbeidsplassen_enabled")
     assert hasattr(settings, "finn_enabled")
@@ -20,7 +29,9 @@ def test_norway_settings_expose_flags():
     assert settings.arbeidsplassen_max_requests == 10
 
 
-def test_finn_defaults_disabled():
+def test_finn_defaults_disabled(monkeypatch, tmp_path):
+    monkeypatch.setattr(settings_module, "_project_root", lambda: tmp_path)
+    monkeypatch.delenv("FINN_ENABLED", raising=False)
     collector = FinnCollector()
     assert collector.source_name == "finn.no"
     assert collector.enabled is False
@@ -28,7 +39,9 @@ def test_finn_defaults_disabled():
     assert collector.get_status()["status"] == "disabled"
 
 
-def test_arbeidsplassen_defaults_disabled_and_makes_zero_network_calls():
+def test_arbeidsplassen_defaults_disabled_and_makes_zero_network_calls(monkeypatch, tmp_path):
+    monkeypatch.setattr(settings_module, "_project_root", lambda: tmp_path)
+    monkeypatch.delenv("ARBEIDSPLASSEN_ENABLED", raising=False)
     collector = ArbeidsplassenCollector()
     assert collector.enabled is False
     assert collector.search_jobs() == []
@@ -156,7 +169,9 @@ def test_arbeidsplassen_handles_api_errors_and_bad_json(monkeypatch):
     assert collector.search_jobs(terms=["polymer"]) == []
 
 
-def test_jobbnorge_defaults_disabled_and_makes_zero_network_calls():
+def test_jobbnorge_defaults_disabled_and_makes_zero_network_calls(monkeypatch, tmp_path):
+    monkeypatch.setattr(settings_module, "_project_root", lambda: tmp_path)
+    monkeypatch.delenv("JOBBNORGE_ENABLED", raising=False)
     collector = JobbnorgeCollector()
     assert collector.enabled is False
     assert collector.search_jobs() == []

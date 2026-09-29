@@ -2,8 +2,13 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+import importlib
+
+settings_module = importlib.import_module("job_mentor.config.settings")
+from job_mentor.config.settings import load_settings
 from job_mentor.database.repository import SQLiteJobRepository
 from job_mentor.models.job import Job
+from job_mentor.notifications.emailer import EmailNotifier
 from job_mentor.reporting.model import DailyReport, DailyReportJob
 from job_mentor.reporting.service import DailyReportService
 from job_mentor.reporting.text_renderer import render_daily_report_text
@@ -187,3 +192,39 @@ def test_report_ordering_is_deterministic(tmp_path):
 
     report = DailyReportService(repository=repo).build_report(days=14)
     assert [job.title for job in report.jobs] == ["A", "B"]
+
+
+def test_email_message_uses_configured_greeting_and_signoff(monkeypatch):
+    monkeypatch.setenv("EMAIL_GREETING", "Hi Jannu,")
+    monkeypatch.setenv("EMAIL_SIGNOFF", "Your potato 🥔")
+    settings = load_settings()
+    notifier = EmailNotifier(email_greeting=settings.email_greeting, email_signoff=settings.email_signoff)
+
+    plain = notifier.render_plain_text("Jobs: 3")
+    html = notifier.render_html("Jobs: 3")
+
+    assert plain.startswith("Hi Jannu,\n\n")
+    assert plain.endswith("\n\nYour potato 🥔")
+    assert "Hi Jannu," in html
+    assert "Your potato 🥔" in html
+    assert "<p>Hi Jannu,</p>" in html
+
+
+def test_load_settings_reads_project_local_env_file(tmp_path, monkeypatch):
+    project_root = tmp_path / "project-root"
+    project_root.mkdir()
+    (project_root / ".env").write_text("EMAIL_GREETING=Hi Jannu,\nEMAIL_SIGNOFF=Your little Potato,\n", encoding="utf-8")
+
+    monkeypatch.delenv("EMAIL_GREETING", raising=False)
+    monkeypatch.delenv("EMAIL_SIGNOFF", raising=False)
+    monkeypatch.setattr(settings_module, "_project_root", lambda: project_root)
+
+    settings = load_settings()
+    assert settings.email_greeting == "Hi Jannu,"
+    assert settings.email_signoff == "Your little Potato,"
+
+    monkeypatch.setenv("EMAIL_GREETING", "Hi override,")
+    monkeypatch.setenv("EMAIL_SIGNOFF", "Your override,")
+    settings = load_settings()
+    assert settings.email_greeting == "Hi override,"
+    assert settings.email_signoff == "Your override,"
