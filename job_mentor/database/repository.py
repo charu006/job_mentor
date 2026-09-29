@@ -361,12 +361,20 @@ class SQLiteJobRepository:
         return self.get_job_by_id(job_id)
 
     def get_jobs_within_date_window(self, days: int = 14) -> list[Job]:
-        from job_mentor.utils.dates import is_within_search_window
+        from job_mentor.utils.dates import is_within_search_window, normalize_datetime
 
         with self._connect() as conn:
             rows = conn.execute("SELECT * FROM jobs").fetchall()
         jobs = [self._job_from_row(row) for row in rows]
-        return [job for job in jobs if job is not None and is_within_search_window(job.posted_date, days=days)]
+
+        def effective_reference(job: Job):
+            for candidate in (job.posted_date, job.discovered_at, job.first_seen_at, job.last_seen_at):
+                dt = normalize_datetime(candidate)
+                if dt is not None:
+                    return dt
+            return None
+
+        return [job for job in jobs if job is not None and is_within_search_window(effective_reference(job), days=days)]
 
     def get_unnotified_jobs(self) -> list[Job]:
         with self._connect() as conn:

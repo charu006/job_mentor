@@ -121,6 +121,8 @@ def test_daily_report_service_returns_structured_data(tmp_path):
         discovered_at=datetime.now(timezone.utc),
         first_seen_at=datetime.now(timezone.utc),
         last_seen_at=datetime.now(timezone.utc),
+        match_score=80.0,
+        match_reasons=["polymer detected in title"],
     )
     repo.insert_job(recent_job)
 
