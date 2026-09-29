@@ -14,9 +14,9 @@ def test_norway_settings_expose_flags():
     assert hasattr(settings, "arbeidsplassen_enabled")
     assert hasattr(settings, "finn_enabled")
     assert hasattr(settings, "jobbnorge_enabled")
-    assert settings.arbeidsplassen_enabled is True
+    assert settings.arbeidsplassen_enabled is False
     assert settings.finn_enabled is False
-    assert settings.jobbnorge_enabled is True
+    assert settings.jobbnorge_enabled is False
     assert settings.arbeidsplassen_max_requests == 10
 
 
@@ -28,13 +28,49 @@ def test_finn_defaults_disabled():
     assert collector.get_status()["status"] == "disabled"
 
 
+def test_arbeidsplassen_defaults_disabled_and_makes_zero_network_calls():
+    collector = ArbeidsplassenCollector()
+    assert collector.enabled is False
+    assert collector.search_jobs() == []
+    assert collector.get_status()["status"] == "disabled"
+    assert collector.max_requests == 10
+
+
 def test_arbeidsplassen_uses_public_api_path():
     collector = ArbeidsplassenCollector(enabled=True)
     assert collector.api_base_url == "https://arbeidsplassen.nav.no"
-    assert collector.search_url.endswith("/public-ads-api")
+    assert collector.search_url.endswith("/api/v1/ads")
     assert "html" not in collector.search_url.lower()
     assert "scrape" not in collector.search_url.lower()
     assert collector.max_requests == 10
+
+
+def test_arbeidsplassen_uses_current_query_contract(monkeypatch):
+    collector = ArbeidsplassenCollector(enabled=True)
+    seen = {}
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+        def read(self):
+            return b'{"ads": []}'
+
+    def fake_urlopen(request, timeout=20):
+        seen['url'] = request.full_url
+        return FakeResponse()
+
+    monkeypatch.setattr(arbeidsplassen_module, "urlopen", fake_urlopen)
+    collector._fetch_search_page(q="polymer", offset=0, limit=1)
+    assert "search=polymer" in seen['url']
+    assert "from=0" in seen['url']
+    assert "size=1" in seen['url']
+    assert "q=" not in seen['url']
+    assert "offset=" not in seen['url']
+    assert "limit=" not in seen['url']
 
 
 def test_arbeidsplassen_parses_public_api_response(monkeypatch):
@@ -120,6 +156,14 @@ def test_arbeidsplassen_handles_api_errors_and_bad_json(monkeypatch):
     assert collector.search_jobs(terms=["polymer"]) == []
 
 
+def test_jobbnorge_defaults_disabled_and_makes_zero_network_calls():
+    collector = JobbnorgeCollector()
+    assert collector.enabled is False
+    assert collector.search_jobs() == []
+    assert collector.get_status()["status"] == "disabled"
+    assert collector.feed_url == "https://www.jobbnorge.no/rss"
+
+
 def test_jobbnorge_uses_rss_path_and_parses_feed(monkeypatch):
     collector = JobbnorgeCollector(enabled=True)
     assert collector.feed_url == "https://www.jobbnorge.no/rss"
@@ -188,6 +232,23 @@ def test_jobbnorge_missing_deadline_is_safe(monkeypatch):
 
 def test_jobbnorge_handles_malformed_xml_and_feed_failures(monkeypatch):
     collector = JobbnorgeCollector(enabled=True)
+
+    sample = '''<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0"><channel>
+        <item>
+            <title>Polymer Engineer &amp; Materials</title>
+            <link>https://example.no/jobs/polymer</link>
+            <description>Develop client-facing &nbsp; material systems.</description>
+            <guid>NO-4040</guid>
+            <pubDate>Mon, 14 Sep 2026 12:00:00 GMT</pubDate>
+        </item>
+    </channel></rss>'''
+    monkeypatch.setattr(collector, "_fetch_feed", lambda: sample)
+    jobs = collector.search_jobs()
+    assert len(jobs) == 1
+    assert jobs[0].title == "Polymer Engineer & Materials"
+    assert jobs[0].source_job_id == "NO-4040"
+
     monkeypatch.setattr(collector, "_fetch_feed", lambda: "<broken><xml>")
     assert collector.search_jobs() == []
 

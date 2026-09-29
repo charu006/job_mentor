@@ -3,10 +3,11 @@ from __future__ import annotations
 import json
 import logging
 from urllib.parse import quote
-from urllib.request import Request, urlopen
+from urllib.request import Request
 
 from job_mentor.collectors.base import BaseCollector
 from job_mentor.config.search_terms import DEFAULT_SEARCH_TERMS
+from job_mentor.network import urlopen_with_reliable_ssl as urlopen
 from job_mentor.models.job import Job
 from job_mentor.utils.dates import is_within_search_window
 

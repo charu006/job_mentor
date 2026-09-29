@@ -67,10 +67,10 @@ class AppSettings:
     arbetsformedlingen_enabled: bool = True
     academicwork_enabled: bool = False
     jobbsafari_enabled: bool = False
-    arbeidsplassen_enabled: bool = True
+    arbeidsplassen_enabled: bool = False
     arbeidsplassen_max_requests: int = 10
     finn_enabled: bool = False
-    jobbnorge_enabled: bool = True
+    jobbnorge_enabled: bool = False
     pracuj_enabled: bool = False
     nofluffjobs_enabled: bool = False
     rocketjobs_enabled: bool = False
@@ -130,10 +130,10 @@ def load_settings() -> AppSettings:
         arbetsformedlingen_enabled=_as_bool(os.getenv("ARBETSFORMEDLINGEN_ENABLED"), True),
         academicwork_enabled=_as_bool(os.getenv("ACADEMICWORK_ENABLED"), False),
         jobbsafari_enabled=_as_bool(os.getenv("JOBBSAFARI_ENABLED"), False),
-        arbeidsplassen_enabled=_as_bool(os.getenv("ARBEIDSPLASSEN_ENABLED"), True),
+        arbeidsplassen_enabled=_as_bool(os.getenv("ARBEIDSPLASSEN_ENABLED"), False),
         arbeidsplassen_max_requests=int(os.getenv("ARBEIDSPLASSEN_MAX_REQUESTS", "10")),
         finn_enabled=_as_bool(os.getenv("FINN_ENABLED"), False),
-        jobbnorge_enabled=_as_bool(os.getenv("JOBBNORGE_ENABLED"), True),
+        jobbnorge_enabled=_as_bool(os.getenv("JOBBNORGE_ENABLED"), False),
         pracuj_enabled=_as_bool(os.getenv("PRACUJ_ENABLED"), False),
         nofluffjobs_enabled=_as_bool(os.getenv("NOFLUFFJOBS_ENABLED"), False),
         rocketjobs_enabled=_as_bool(os.getenv("ROCKETJOBS_ENABLED"), False),

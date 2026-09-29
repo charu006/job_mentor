@@ -6,11 +6,12 @@ import os
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+from urllib.request import Request
 
 from job_mentor.collectors.base import BaseCollector
 from job_mentor.config.search_terms import DEFAULT_SEARCH_TERMS
 from job_mentor.models.job import Job
+from job_mentor.network import urlopen_with_reliable_ssl as urlopen
 
 logger = logging.getLogger("job_mentor.collectors.jobdigger")
 

@@ -6,11 +6,12 @@ import os
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
-from urllib.request import Request, urlopen
+from urllib.request import Request
 
 from job_mentor.collectors.base import BaseCollector
 from job_mentor.config.search_terms import DEFAULT_SEARCH_TERMS
 from job_mentor.models.job import Job
+from job_mentor.network import urlopen_with_reliable_ssl as urlopen
 
 logger = logging.getLogger("job_mentor.collectors.arbetsformedlingen")
 
@@ -75,7 +76,6 @@ class ArbetsformedlingenCollector(BaseCollector):
             "q": q,
             "offset": offset,
             "limit": limit,
-            "sort": "published",
         }
         query_string = urlencode(params)
         request = Request(
@@ -221,7 +221,14 @@ class ArbetsformedlingenCollector(BaseCollector):
 
         url = raw_job.get("webpage_url") or raw_job.get("url") or raw_job.get("job_url") or raw_job.get("link")
         source_job_id = raw_job.get("id") or raw_job.get("source_job_id") or raw_job.get("job_id")
-        posted_date = raw_job.get("published") or raw_job.get("published_at") or raw_job.get("date") or raw_job.get("created")
+        posted_date = (
+            raw_job.get("publication_date")
+            or raw_job.get("last_publication_date")
+            or raw_job.get("published")
+            or raw_job.get("published_at")
+            or raw_job.get("date")
+            or raw_job.get("created")
+        )
 
         if not title:
             return None

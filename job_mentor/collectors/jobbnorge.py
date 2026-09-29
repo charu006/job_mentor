@@ -2,14 +2,16 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 from typing import Any
 from urllib.error import URLError
-from urllib.request import Request, urlopen
+from urllib.request import Request
 from xml.etree import ElementTree as ET
 
 from job_mentor.collectors.base import BaseCollector
 from job_mentor.config.search_terms import DEFAULT_SEARCH_TERMS
 from job_mentor.models.job import Job
+from job_mentor.network import urlopen_with_reliable_ssl as urlopen
 
 logger = logging.getLogger("job_mentor.collectors.jobbnorge")
 
@@ -39,7 +41,7 @@ class JobbnorgeCollector(BaseCollector):
     def _resolve_enabled(self, override: bool | None) -> bool:
         if override is not None:
             return bool(override)
-        raw_value = os.getenv("JOBBNORGE_ENABLED", "true").strip().lower()
+        raw_value = os.getenv("JOBBNORGE_ENABLED", "false").strip().lower()
         return raw_value in {"1", "true", "yes", "on"}
 
     def _fetch_feed(self) -> str:
@@ -50,6 +52,16 @@ class JobbnorgeCollector(BaseCollector):
         except (URLError, TimeoutError, OSError) as exc:
             logger.warning("Could not fetch Jobbnorge RSS feed: %s", exc)
             return ""
+
+    @staticmethod
+    def _sanitize_feed_xml(feed_xml: str) -> str:
+        if not feed_xml:
+            return ""
+        xml = feed_xml.strip()
+        if not xml:
+            return ""
+        xml = re.sub(r"&(?!(?:#\d+;|#x[0-9A-Fa-f]+;|amp;|lt;|gt;|quot;|apos;))([A-Za-z][A-Za-z0-9]+;)", r"&amp;\1", xml)
+        return xml
 
     def get_status(self) -> dict[str, str]:
         if not self.enabled:
@@ -74,8 +86,9 @@ class JobbnorgeCollector(BaseCollector):
             logger.warning("Jobbnorge feed returned no XML payload; skipping collection.")
             return []
 
+        sanitized_feed = self._sanitize_feed_xml(feed_xml)
         try:
-            root = ET.fromstring(feed_xml)
+            root = ET.fromstring(sanitized_feed)
         except ET.ParseError as exc:
             logger.warning("Jobbnorge RSS feed could not be parsed: %s", exc)
             return []

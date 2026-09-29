@@ -77,6 +77,31 @@ def test_arbetsformedlingen_parses_public_api_response(monkeypatch):
     assert jobs[0].url == "https://example.se/jobs/se-1001"
 
 
+def test_arbetsformedlingen_prefers_live_publication_fields(monkeypatch):
+    collector = ArbetsformedlingenCollector(enabled=True)
+
+    sample = {
+        "total": {"value": 1},
+        "hits": [{
+            "id": "SE-2002",
+            "title": "R&D Engineer in Polymer Materials",
+            "employer": {"name": "NKT"},
+            "location": {"municipality": "Karlskrona"},
+            "description": {"text": "Polymer materials and technology."},
+            "webpage_url": "https://example.se/jobs/se-2002",
+            "publication_date": "2026-09-16T15:25:02",
+            "last_publication_date": "2026-09-30T23:59:59",
+            "application_deadline": "2026-09-30T23:59:59",
+        }],
+    }
+
+    monkeypatch.setattr(collector, "_fetch_search_page", lambda q="polymer", offset=0, limit=10: sample)
+    jobs = collector.search_jobs()
+    assert len(jobs) == 1
+    assert jobs[0].posted_date is not None
+    assert str(jobs[0].posted_date).startswith("2026-09-16") or str(jobs[0].posted_date).startswith("2026-09-30")
+
+
 def test_arbetsformedlingen_enforces_global_request_cap(monkeypatch):
     collector = ArbetsformedlingenCollector(enabled=True, max_requests=3)
     calls = []
