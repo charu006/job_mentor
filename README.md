@@ -55,7 +55,13 @@ The project is built in stages, and Stage 4 introduces a deterministic matching 
 | publicjobs.ie | DISABLED | Safe disabled stub | Official terms restrict copying/reproduction for personal, non-commercial use; the project does not treat public visibility as permission to scrape |
 | irishjobs.ie | DISABLED | Safe disabled stub | The Stepstone Group Ireland Recruit Limited terms restrict removing website content by competitive means; no documented public partner API or permitted automated retrieval mechanism is used |
 | recruitireland.com | DISABLED | Safe disabled stub | Public viewing is allowed within intended use, but no verified public API/feed or explicitly permitted automated interface was identified for this project |
+## Stage 5F Portugal portal status
 
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| emprego.iefp.pt | DISABLED | Safe disabled stub | The current public IEFP experience does not provide a documented public vacancy API/feed or explicitly permitted automated retrieval interface |
+| net-empregos.com | ACTIVE via official RSS feed | Official feed | Uses the public RSS feed published by the site itself; no credential or scraping bypass is used |
+| beebez.pt | DISABLED / domain not current | Safe disabled stub | The requested beebez.pt domain is not treated as a current public job portal and no verified public jobs API/feed was identified |
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:

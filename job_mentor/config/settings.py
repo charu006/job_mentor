@@ -26,6 +26,9 @@ class AppSettings:
         "PublicJobs",
         "IrishJobs",
         "RecruitIreland",
+        "Iefp",
+        "NetEmpregos",
+        "Beebez",
     )
     arbeitsagentur_enabled: bool = True
     stepstone_enabled: bool = False
@@ -43,6 +46,9 @@ class AppSettings:
     publicjobs_enabled: bool = False
     irishjobs_enabled: bool = False
     recruitireland_enabled: bool = False
+    iefp_enabled: bool = False
+    net_empregos_enabled: bool = False
+    beebez_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -64,7 +70,7 @@ def load_settings() -> AppSettings:
             portal.strip()
             for portal in os.getenv(
                 "JOB_PORTALS",
-                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland",
+                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez",
             ).split(",")
             if portal.strip()
         ),
@@ -84,6 +90,9 @@ def load_settings() -> AppSettings:
         publicjobs_enabled=_as_bool(os.getenv("PUBLICJOBS_ENABLED"), False),
         irishjobs_enabled=_as_bool(os.getenv("IRISHJOBS_ENABLED"), False),
         recruitireland_enabled=_as_bool(os.getenv("RECRUITIRELAND_ENABLED"), False),
+        iefp_enabled=_as_bool(os.getenv("IEFP_ENABLED"), False),
+        net_empregos_enabled=_as_bool(os.getenv("NET_EMPREGOS_ENABLED"), False),
+        beebez_enabled=_as_bool(os.getenv("BEEBEZ_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),
