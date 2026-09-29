@@ -211,3 +211,18 @@ The project remains structured into modular layers:
 - No real credentials or secrets are stored in the repository.
 - The matching engine is intentionally local and deterministic.
 - Email sending, deployment workflows, and additional portal automation remain intentionally out of scope for this stage.
+
+## Stage 7A scheduling support
+
+Job Mentor is scheduled for **12:00 Europe/Berlin every day** using GitHub Actions. Because GitHub Actions cron expressions are UTC-based, the workflow uses two scheduled triggers, `0 10 * * *` and `0 11 * * *`, plus a Berlin-time guard so the job only runs when the local time is actually 12:00. This avoids DST drift without hard-coding a single UTC hour year-round.
+
+The scheduled workflow reads SMTP values from GitHub repository secrets. The required secrets are:
+
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USERNAME`
+- `SMTP_PASSWORD`
+- `EMAIL_FROM`
+- `EMAIL_TO`
+
+The workflow also supports `workflow_dispatch` for safe manual testing. That manual trigger defaults to `--dry-run`, so you can verify the workflow without sending email unless you explicitly override it.

@@ -1,0 +1,66 @@
+name: Job Mentor Daily Run
+
+on:
+  schedule:
+    - cron: "0 10 * * *"
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run a safe preview instead of sending email"
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+      EMAIL_TO: ${{ secrets.EMAIL_TO }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+
+      - name: Determine whether the Berlin schedule is due
+        id: schedule
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          else
+            python - <<'PY' >> "$GITHUB_OUTPUT"
+from job_mentor.scheduler.digest_scheduler import default_scheduler
+from job_mentor.timezone_utils import utc_now
+
+print(f"should_run={str(default_scheduler.is_due(utc_now())).lower()}")
+PY
+          fi
+
+      - name: Choose command
+        id: command
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "command=python -m job_mentor --dry-run" >> "$GITHUB_OUTPUT"
+          else
+            echo "command=python -m job_mentor" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Job Mentor
+        if: steps.schedule.outputs.should_run == 'true'
+        run: ${{ steps.command.outputs.command }}

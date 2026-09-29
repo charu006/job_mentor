@@ -295,12 +295,21 @@ def test_email_notifier_sends_secure_smtp_message(monkeypatch):
 
 
 def test_email_notifier_missing_smtp_config_returns_error(monkeypatch):
-    monkeypatch.delenv("SMTP_HOST", raising=False)
-    monkeypatch.delenv("SMTP_PORT", raising=False)
-    monkeypatch.delenv("SMTP_USERNAME", raising=False)
-    monkeypatch.delenv("SMTP_PASSWORD", raising=False)
-    monkeypatch.delenv("EMAIL_FROM", raising=False)
-    monkeypatch.delenv("EMAIL_TO", raising=False)
+    from types import SimpleNamespace
+
+    monkeypatch.setattr(
+        "job_mentor.notifications.emailer.load_settings",
+        lambda: SimpleNamespace(
+            smtp_host=None,
+            smtp_port=587,
+            smtp_username=None,
+            smtp_password=None,
+            email_from=None,
+            email_to=None,
+            email_greeting="Hi there,",
+            email_signoff="Best regards,",
+        ),
+    )
 
     notifier = EmailNotifier(
         smtp_host="",

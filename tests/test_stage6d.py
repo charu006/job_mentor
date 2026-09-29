@@ -141,7 +141,7 @@ def test_stage6d_dry_run_never_calls_smtp(tmp_path, monkeypatch):
     assert calls["send"] == 0
     assert result.dry_run is True
     assert result.notification_result is None
-    assert result.email.recipient == "alerts@example.com"
+    assert result.email.recipient == result.settings.email_to
     assert result.email.subject == f"JOB MENTOR — DAILY JOB REPORT ({result.report.report_date})"
     assert "Daily report body" in result.email.plain_text
 
