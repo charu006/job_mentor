@@ -24,6 +24,14 @@ The project is built in stages, and Stage 4 introduces a deterministic matching 
 | StepStone | Germany | DISABLED / REQUIRES AUTHORIZATION | Not currently automated; safe disabled stub | Yes, if a permitted API contract is later provided |
 | meinestadt | Germany | DISABLED / NOT CURRENTLY AUTOMATABLE | Not currently automated; safe disabled stub | No verified public API or feed available |
 
+## Stage 5B Netherlands portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| werk.nl | DISABLED | Safe disabled stub | Automated access is not permitted under the current public terms; no scraper is used |
+| Nationale Vacaturebank | DISABLED | Safe disabled stub | No verified public API/feed identified for safe automated access |
+| JobDigger | API-KEY REQUIRED | Official API with documented endpoints | Enabled only when `JOBDIGGER_API_KEY` is configured and `JOBDIGGER_ENABLED=true` |
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:
