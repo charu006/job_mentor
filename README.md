@@ -40,6 +40,14 @@ The project is built in stages, and Stage 4 introduces a deterministic matching 
 | jobs.ch | DISABLED | Safe disabled stub | JobCloud employer/recruiting platform; automated scraping is not authorized |
 | jobup.ch | DISABLED | Safe disabled stub | JobCloud employer/recruiting platform; no verified public retrieval API/feed identified |
 
+## Stage 5D Denmark portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| jobnet.dk | DISABLED | Safe disabled stub | Public candidate-facing job search exists, but the current official employer-side material is controlled and no documented public vacancy-search API/feed is accepted for automated retrieval |
+| ofir.dk | DISABLED | Safe disabled stub | The current official site is closed (HTTP 410) and no supported public retrieval interface is available |
+| workindenmark.dk | DISABLED | Safe disabled stub | Public information portal directing to Jobnet-hosted vacancy search; no verified public API/feed is accepted for automation |
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:

@@ -20,6 +20,9 @@ class AppSettings:
         "ArbeitSwiss",
         "JobsCH",
         "JobUpCH",
+        "JobNet",
+        "Ofir",
+        "WorkInDenmark",
     )
     arbeitsagentur_enabled: bool = True
     stepstone_enabled: bool = False
@@ -31,6 +34,9 @@ class AppSettings:
     arbeit_swiss_enabled: bool = False
     jobs_ch_enabled: bool = False
     jobup_ch_enabled: bool = False
+    jobnet_enabled: bool = False
+    ofir_enabled: bool = False
+    workindenmark_enabled: bool = False
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -52,7 +58,7 @@ def load_settings() -> AppSettings:
             portal.strip()
             for portal in os.getenv(
                 "JOB_PORTALS",
-                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH",
+                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark",
             ).split(",")
             if portal.strip()
         ),
@@ -66,6 +72,9 @@ def load_settings() -> AppSettings:
         arbeit_swiss_enabled=_as_bool(os.getenv("ARBEIT_SWISS_ENABLED"), False),
         jobs_ch_enabled=_as_bool(os.getenv("JOBS_CH_ENABLED"), False),
         jobup_ch_enabled=_as_bool(os.getenv("JOBUP_CH_ENABLED"), False),
+        jobnet_enabled=_as_bool(os.getenv("JOBNET_ENABLED"), False),
+        ofir_enabled=_as_bool(os.getenv("OFIR_ENABLED"), False),
+        workindenmark_enabled=_as_bool(os.getenv("WORKINDENMARK_ENABLED"), False),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),
