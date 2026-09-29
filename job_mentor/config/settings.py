@@ -11,6 +11,7 @@ class AppSettings:
     recipient_email: str | None = None
     monitoring_enabled: bool = False
     job_portals: tuple[str, ...] = ("EURES", "LinkedIn", "Indeed", "StepStone")
+    database_path: str = "data/job_mentor.db"
 
 
 def load_settings() -> AppSettings:
@@ -24,6 +25,7 @@ def load_settings() -> AppSettings:
             for portal in os.getenv("JOB_PORTALS", "EURES,LinkedIn,Indeed,StepStone").split(",")
             if portal.strip()
         ),
+        database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
     )
 
 

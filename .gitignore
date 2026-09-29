@@ -11,6 +11,11 @@ venv/
 .env.*
 !.env.example
 
+# Local data
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
 # Test/output artifacts
 .pytest_cache/
 .coverage
