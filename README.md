@@ -81,6 +81,16 @@ The project is built in stages, and Stage 4 introduces a deterministic matching 
 
 Official API/access rationale: Arbetsförmedlingen’s official JobSearch API is a public, documented JSON interface under the official jobtech/open-data model and is used directly. Academic Work Sweden and JobbSafari are kept disabled because no verified public API/feed or approved retrieval model was identified, and the current terms restrict automated or competing use.
 
+## Stage 5I Norway portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| Arbeidsplassen / NAV | ACTIVE via official public API | Public ads API | Uses the official public NAV/Arbeidsplassen job-ad API surface. No HTML scraping is used. |
+| FINN.no | DISABLED | Safe disabled stub | FINN’s current public interface is treated as out-of-scope for automated retrieval without documented public permission and a permitted interface. |
+| Jobbnorge | ACTIVE via official RSS feed | Official RSS feed | Uses the public Jobbnorge RSS feed only; no browser scraping or bypass is used. |
+
+Official access rationale: NAV/Arbeidsplassen exposes a public job-ad API surface and is treated as the active official API path for this project. Jobbnorge publishes a public RSS feed and is used as the official feed-based collector. FINN remains disabled because the current public website and business-facing publishing model does not provide a clearly documented public retrieval API/feed contract for automated monitoring in this project. The NAV collector uses a conservative global request cap of 10 requests per collector run, configurable via `ARBEIDSPLASSEN_MAX_REQUESTS`.
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:

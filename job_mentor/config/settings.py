@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import os
 from dataclasses import dataclass
@@ -35,6 +35,9 @@ class AppSettings:
         "Arbetsformedlingen",
         "AcademicWork",
         "JobbSafari",
+        "Arbeidsplassen",
+        "Finn",
+        "Jobbnorge",
     )
     arbeitsagentur_enabled: bool = True
     stepstone_enabled: bool = False
@@ -61,6 +64,10 @@ class AppSettings:
     arbetsformedlingen_enabled: bool = True
     academicwork_enabled: bool = False
     jobbsafari_enabled: bool = False
+    arbeidsplassen_enabled: bool = True
+    arbeidsplassen_max_requests: int = 10
+    finn_enabled: bool = False
+    jobbnorge_enabled: bool = True
     database_path: str = "data/job_mentor.db"
     timezone: str = "Europe/Berlin"
     report_hour: int = 12
@@ -82,7 +89,7 @@ def load_settings() -> AppSettings:
             portal.strip()
             for portal in os.getenv(
                 "JOB_PORTALS",
-                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez,Tyomarkkinatori,Duunitori,MonsterFi,Arbetsformedlingen,AcademicWork,JobbSafari",
+                "Arbeitsagentur,StepStone,Meinestadt,WerkNL,NationaleVacaturebank,JobDigger,ArbeitSwiss,JobsCH,JobUpCH,JobNet,Ofir,WorkInDenmark,PublicJobs,IrishJobs,RecruitIreland,Iefp,NetEmpregos,Beebez,Tyomarkkinatori,Duunitori,MonsterFi,Arbetsformedlingen,AcademicWork,JobbSafari,Arbeidsplassen,Finn,Jobbnorge",
             ).split(",")
             if portal.strip()
         ),
@@ -111,6 +118,10 @@ def load_settings() -> AppSettings:
         arbetsformedlingen_enabled=_as_bool(os.getenv("ARBETSFORMEDLINGEN_ENABLED"), True),
         academicwork_enabled=_as_bool(os.getenv("ACADEMICWORK_ENABLED"), False),
         jobbsafari_enabled=_as_bool(os.getenv("JOBBSAFARI_ENABLED"), False),
+        arbeidsplassen_enabled=_as_bool(os.getenv("ARBEIDSPLASSEN_ENABLED"), True),
+        arbeidsplassen_max_requests=int(os.getenv("ARBEIDSPLASSEN_MAX_REQUESTS", "10")),
+        finn_enabled=_as_bool(os.getenv("FINN_ENABLED"), False),
+        jobbnorge_enabled=_as_bool(os.getenv("JOBBNORGE_ENABLED"), True),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
         timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
         report_hour=int(os.getenv("REPORT_HOUR", "12")),

@@ -43,6 +43,7 @@ class Job:
     url: str | None = None
     description: str | None = None
     posted_date: date | datetime | str | None = None
+    deadline: date | datetime | str | None = None
     discovered_at: datetime | None = None
     first_seen_at: datetime | None = None
     last_seen_at: datetime | None = None
@@ -67,6 +68,7 @@ class Job:
         self.last_seen_at = ensure_utc(self.last_seen_at)
         self.notified_at = ensure_utc(self.notified_at)
         self.posted_date = ensure_utc(self.posted_date) or self.posted_date
+        self.deadline = ensure_utc(self.deadline) or self.deadline
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -80,6 +82,7 @@ class Job:
             "url": self.url,
             "description": self.description,
             "posted_date": self.posted_date.isoformat() if isinstance(self.posted_date, (date, datetime)) else self.posted_date,
+            "deadline": self.deadline.isoformat() if isinstance(self.deadline, (date, datetime)) else self.deadline,
             "discovered_at": self.discovered_at.isoformat() if self.discovered_at else None,
             "first_seen_at": self.first_seen_at.isoformat() if self.first_seen_at else None,
             "last_seen_at": self.last_seen_at.isoformat() if self.last_seen_at else None,

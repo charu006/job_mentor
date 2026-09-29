@@ -1,12 +1,15 @@
 from job_mentor.collectors.academic_work import AcademicWorkCollector
 from job_mentor.collectors.arbeit_swiss import ArbeitSwissCollector
 from job_mentor.collectors.arbetsformedlingen import ArbetsformedlingenCollector
+from job_mentor.collectors.arbeidsplassen import ArbeidsplassenCollector
 from job_mentor.collectors.arbeitsagentur import ArbeitsagenturCollector
 from job_mentor.collectors.base import BaseCollector
 from job_mentor.collectors.beebez import BeebezCollector
 from job_mentor.collectors.duunitori import DuunitoriCollector
+from job_mentor.collectors.finn import FinnCollector
 from job_mentor.collectors.iefp import IefpCollector
 from job_mentor.collectors.irishjobs import IrishJobsCollector
+from job_mentor.collectors.jobbnorge import JobbnorgeCollector
 from job_mentor.collectors.jobbsafari import JobbSafariCollector
 from job_mentor.collectors.jobdigger import JobDiggerCollector
 from job_mentor.collectors.jobnet import JobNetCollector
@@ -28,16 +31,19 @@ __all__ = [
     "AcademicWorkCollector",
     "ArbetsformedlingenCollector",
     "ArbeitSwissCollector",
+    "ArbeidsplassenCollector",
     "ArbeitsagenturCollector",
     "BaseCollector",
     "BeebezCollector",
     "DuunitoriCollector",
+    "FinnCollector",
     "IefpCollector",
     "IrishJobsCollector",
     "JobDiggerCollector",
     "JobNetCollector",
     "JobUpCHCollector",
     "JobbSafariCollector",
+    "JobbnorgeCollector",
     "JobsCHCollector",
     "MeinestadtCollector",
     "MonsterFiCollector",
