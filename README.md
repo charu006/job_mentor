@@ -91,6 +91,16 @@ Official API/access rationale: Arbetsförmedlingen’s official JobSearch API is
 
 Official access rationale: NAV/Arbeidsplassen exposes a public job-ad API surface and is treated as the active official API path for this project. Jobbnorge publishes a public RSS feed and is used as the official feed-based collector. FINN remains disabled because the current public website and business-facing publishing model does not provide a clearly documented public retrieval API/feed contract for automated monitoring in this project. The NAV collector uses a conservative global request cap of 10 requests per collector run, configurable via `ARBEIDSPLASSEN_MAX_REQUESTS`.
 
+## Stage 5J Poland portal status
+
+| Portal | Status | Integration | Notes |
+| --- | --- | --- | --- |
+| pracuj.pl | DISABLED | Safe disabled stub | Public job-search pages exist, but no verified documented public vacancy-search API/feed authorized for this project has been identified. Public website access is not treated as permission to scrape or reverse-engineer non-public interfaces. |
+| nofluffjobs.com | DISABLED | Safe disabled stub | The current official terms prohibit downloading or systematically reusing job-board data, including individual advertisements, unless separately authorized. This project does not bypass those restrictions via browser automation, undocumented endpoints, or scraping. |
+| rocketjobs.pl | DISABLED | Safe disabled stub | The official terms prohibit copying, downloading, or distributing application content and database material without prior written permission. No documented public API/feed or explicit permission for automated retrieval has been identified. |
+
+Official access rationale: Each of these Polish portals remains disabled by default because the project only permits collection from documented, clearly authorized public interfaces. The project does not treat public form pages or browser-visible content as permission to scrape or bypass terms, and no undocumented private API endpoints or hidden browser-network workarounds are used.
+
 ## Matching engine purpose
 
 The matching engine is intended to score a job based on how strongly it matches the intended job family:

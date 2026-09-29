@@ -19,9 +19,12 @@ from job_mentor.collectors.meinestadt import MeinestadtCollector
 from job_mentor.collectors.monster_fi import MonsterFiCollector
 from job_mentor.collectors.nationalevacaturebank import NationaleVacaturebankCollector
 from job_mentor.collectors.net_empregos import NetEmpregosCollector
+from job_mentor.collectors.nofluffjobs import NoFluffJobsCollector
 from job_mentor.collectors.ofir import OfirCollector
+from job_mentor.collectors.pracuj import PracujCollector
 from job_mentor.collectors.publicjobs import PublicJobsCollector
 from job_mentor.collectors.recruitireland import RecruitIrelandCollector
+from job_mentor.collectors.rocketjobs import RocketJobsCollector
 from job_mentor.collectors.stepstone import StepStoneCollector
 from job_mentor.collectors.tyomarkkinatori import TyomarkkinatoriCollector
 from job_mentor.collectors.werk_nl import WerkNLCollector
@@ -49,9 +52,12 @@ __all__ = [
     "MonsterFiCollector",
     "NationaleVacaturebankCollector",
     "NetEmpregosCollector",
+    "NoFluffJobsCollector",
     "OfirCollector",
+    "PracujCollector",
     "PublicJobsCollector",
     "RecruitIrelandCollector",
+    "RocketJobsCollector",
     "StepStoneCollector",
     "TyomarkkinatoriCollector",
     "WerkNLCollector",
