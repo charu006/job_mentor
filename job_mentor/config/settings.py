@@ -12,6 +12,9 @@ class AppSettings:
     monitoring_enabled: bool = False
     job_portals: tuple[str, ...] = ("EURES", "LinkedIn", "Indeed", "StepStone")
     database_path: str = "data/job_mentor.db"
+    timezone: str = "Europe/Berlin"
+    report_hour: int = 12
+    report_minute: int = 0
 
 
 def load_settings() -> AppSettings:
@@ -26,6 +29,9 @@ def load_settings() -> AppSettings:
             if portal.strip()
         ),
         database_path=os.getenv("DATABASE_PATH", "data/job_mentor.db"),
+        timezone=os.getenv("TIMEZONE", "Europe/Berlin"),
+        report_hour=int(os.getenv("REPORT_HOUR", "12")),
+        report_minute=int(os.getenv("REPORT_MINUTE", "0")),
     )
 
 
