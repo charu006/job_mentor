@@ -214,7 +214,7 @@ The project remains structured into modular layers:
 
 ## Stage 7A scheduling support
 
-Job Mentor is scheduled for **12:00 Europe/Berlin every day** using GitHub Actions. Because GitHub Actions cron expressions are UTC-based, the workflow uses two scheduled triggers, `0 10 * * *` and `0 11 * * *`, plus a Berlin-time guard so the job only runs when the local time is actually 12:00. This avoids DST drift without hard-coding a single UTC hour year-round.
+Job Mentor is scheduled for **12:07 Europe/Berlin every day** using GitHub Actions native timezone-aware scheduling with `cron: "7 12 * * *"` and `timezone: "Europe/Berlin"`. This avoids the old UTC dual-cron workaround and keeps the schedule anchored to Berlin local time across DST changes.
 
 The scheduled workflow reads SMTP values from GitHub repository secrets. The required secrets are:
 

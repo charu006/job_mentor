@@ -2,8 +2,8 @@ name: Job Mentor Daily Run
 
 on:
   schedule:
-    - cron: "0 10 * * *"
-    - cron: "0 11 * * *"
+    - cron: "7 12 * * *"
+      timezone: "Europe/Berlin"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -36,17 +36,6 @@ jobs:
       - name: Install dependencies
         run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
 
-      - name: Determine whether the Berlin schedule is due
-        id: schedule
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "should_run=true" >> "$GITHUB_OUTPUT"
-          else
-            SHOULD_RUN=$(python -c "from job_mentor.scheduler.digest_scheduler import default_scheduler; from job_mentor.timezone_utils import utc_now; print(str(default_scheduler.is_due(utc_now())).lower())")
-            echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Choose command
         id: command
         shell: bash
@@ -58,5 +47,4 @@ jobs:
           fi
 
       - name: Run Job Mentor
-        if: steps.schedule.outputs.should_run == 'true'
         run: ${{ steps.command.outputs.command }}
